@@ -121,8 +121,7 @@ GD_E = 5
 last_eta = GD_eta
 
 client_id = sys.argv[1]
-port_client = int(sys.argv[2])
-opt_method = int(sys.argv[3])
+opt_method = int(sys.argv[2])
 all_losses = []
 
 X_tr, y_tr, X_te, y_te, _, _ = get_data(client_id)
