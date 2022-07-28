@@ -62,7 +62,7 @@ class WaiteClients(threading.Thread):
             n_features = n_feature
             client_port = 6000 + int(register[0][6])
             users[client_id] = [sample_size, n_feature, client_port]
-            print(register[3], register[4])
+            print(addr)
             client_sockets.append(client)
             print("connected with " + client_id + ", " + "sample size is " + str(
                 sample_size) + ", feature size is " + str(n_feature))
@@ -177,14 +177,33 @@ while cur_epoch < total_epochs:
         while client_received < len(users):
             client_received += 1
 
+            # buffer_receive = client_sockets[client_received - 1].recv(1024)
+            # client_sockets[client_received - 1].setblocking(0)
+            # while True:  # 循环接收
+            #     try:
+            #         time.sleep(0.001)
+            #         data = client_sockets[client_received - 1].recv(4096)  # 接收1024字节
+            #         buffer_receive += data  # 拼接到结果中
+            #         print('data', len(data))
+            #         print('buffer', len(buffer_receive))
+            #     except BlockingIOError as e:  # 如果没有数据了
+            #         break  # 退出循环
+
+            # client_sockets[client_received - 1].setblocking(1)
+
             buffer_receive = b""
             while True:
-                data = client_sockets[client_received - 1].recv(1024)
+                time.sleep(0.5)
+                data = client_sockets[client_received - 1].recv(65536)
                 if data is not None:
                     buffer_receive += data
                 # if data is None or len(data) < 1024:
-                if len(buffer_receive) == 62980:
-                    break
+                print(len(buffer_receive))
+                print("data", len(data))
+                break
+                # if len(buffer_receive) == 62980:
+                #     break
+                # else if
 
             print(len(buffer_receive))
             buffer_receive = pickle.loads(buffer_receive)
